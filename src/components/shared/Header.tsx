@@ -7,9 +7,10 @@ import Notification from "./Notification";
 import CategorySelector from "./CategorySelector";
 import { headerMenu } from "@/CONSTANT/data";
 import { Link } from "react-router-dom";
-import { WalletConnect } from "../Wallet/WalletConnect";
+// import { WalletConnect } from "../Wallet/WalletConnect";
 import Logo from "./Logo";
 import SearchBar from "../search/SearchBar";
+import XionWallet from "../Wallet/XionWallet";
 
 interface IMobileMenu {
   isOpen: boolean;
@@ -56,7 +57,8 @@ const MobileMenu: React.FC<IMobileMenu> = ({ isOpen, closeMobile, handleOutsideC
             </nav>
             <Notification />
             <SwitchButton />
-            <WalletConnect/>
+            {/* <WalletConnect/> */}
+            <XionWallet/>
           </div>
         </motion.div>
       )}
@@ -76,7 +78,8 @@ const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => (
     <div className="block md:hidden">
       {/* <AppButton label="Connect" variant="default" /> */}
       <div className="flex items-center gap-4">
-        <WalletConnect/>
+        {/* <WalletConnect/> */}
+        <XionWallet/>
         <button onClick= {closeMobile} className="text-white">
           {isOpen ? <X className="text-warp-100 w-6 h-6" /> : <Menu className="text-warp-100 w-6 h-6" />}
         </button>
@@ -97,7 +100,8 @@ const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => (
       <Notification />
       <SwitchButton />
       {/* <AppButton label="Connect Wallet" variant="default" /> */}
-      <WalletConnect/>
+      {/* <WalletConnect/> */}
+      <XionWallet/>
     </div>
   </section>
 );
