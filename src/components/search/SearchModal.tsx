@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
+import axios from "axios";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react"; // Close icon
+import { X } from "lucide-react";
 
 // Set the app element to avoid accessibility issues
 Modal.setAppElement("#root");
@@ -13,6 +14,53 @@ interface SearchModalProps {
 }
 
 const SearchModal: React.FC<SearchModalProps> = ({ query, isOpen, setIsOpen }) => {
+  const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState<string>("");
+
+  useEffect(() => {
+    if (isOpen && query.trim() !== "") {
+      fetchHouseHistory(query);
+    }
+  }, [isOpen, query]);
+
+  const fetchHouseHistory = async (address: string) => {
+    setLoading(true);
+    setHistory("");
+
+    try {
+      const response = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-4",
+          messages: [
+            {
+              role: "system",
+              content: "You are a real estate historian. Provide a brief but detailed history of a given house address, including past owners, major events, and any notable architectural changes."
+            },
+            {
+              role: "user",
+              content: `Give me the history of this house address: ${address}`
+            }
+          ],
+          max_tokens: 300
+        },
+        {
+          headers: {
+            "Authorization": `Bearer ${import.meta.env.VITE_OPENAI_KEY}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      setHistory(response.data.choices[0]?.message?.content || "No history found.");
+    } catch (error) {
+      console.error("Error fetching house history:", error);
+      setHistory("Failed to retrieve history. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -30,15 +78,19 @@ const SearchModal: React.FC<SearchModalProps> = ({ query, isOpen, setIsOpen }) =
       </Button>
 
       {/* Modal Header */}
-      <h2 className="text-xl font-semibold text-gray-900 text-center">Search Results</h2>
+      <h2 className="text-xl font-semibold text-gray-900 text-center">House History</h2>
       <p className="text-center text-gray-600 mt-2">
-        Showing results for: <span className="font-semibold">{query}</span>
+        Address: <span className="font-semibold">{query}</span>
       </p>
 
-      {/* Search Results Placeholder */}
-      <div className="mt-4 text-gray-700 text-center">
-        <p className="text-gray-500">No matching properties found. 🏡 Try a different search term!</p>
-      </div>
+      {/* Loading State */}
+      {loading ? (
+        <div className="text-center mt-4 text-gray-500">Fetching history... ⏳</div>
+      ) : (
+        <div className="mt-4 text-gray-700 text-center">
+          <p className="text-gray-500">{history}</p>
+        </div>
+      )}
     </Modal>
   );
 };

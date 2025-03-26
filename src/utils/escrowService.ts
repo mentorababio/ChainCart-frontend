@@ -2,7 +2,6 @@ import { Xion_Chain } from "@/config/xion";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { GasPrice } from "@cosmjs/stargate";
 
-
 // #[cw_serde]
 // pub enum ExecuteMsg {
 //     InitiateEscrow { seller: Addr, amount: Uint128 }, // Buyer initiates escrow
