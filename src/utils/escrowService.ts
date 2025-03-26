@@ -1,6 +1,6 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { GasPrice } from "@cosmjs/stargate";
-import {Xion_Chain} from from "@/config/xion";
+import {Xion_Chain} from "@/config/xion";
 
 // #[cw_serde]
 // pub enum ExecuteMsg {
