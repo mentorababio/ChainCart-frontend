@@ -40,6 +40,8 @@ export const legacyConfig = {
 // xion1uyq35hcqnfqcgygkrvkee3slx58wwc357zpqdk7hcd78fz4wtyqqtm3c76
 const treasuryConfig = {
   treasury: "xion1pznw0ptf2gfkvc6u7tu6k09sm26m99dlfksen5cm2gqfp4qkmjgqzhgr4k", // Example XION treasury contract
+   rpcUrl: "https://rpc.xion-testnet-2.burnt.com:443",
+   restUrl: "https://api.xion-testnet-2.burnt.com/",
   // Optional params to activate mainnet config
   // rpcUrl: "https://rpc.xion-mainnet-1.burnt.com:443",
   // restUrl: "https://api.xion-mainnet-1.burnt.com:443",
