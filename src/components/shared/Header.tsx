@@ -1,6 +1,6 @@
 import { useState, MouseEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-// import { SearchIcon, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import SwitchButton from "./SwitchButton";
 import Notification from "./Notification";
 // import { InputField } from "./InputField";
