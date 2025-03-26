@@ -5,10 +5,10 @@
 Our platform revolutionizes real estate transactions by creating a decentralized marketplace for landed property, powered by AI using the Xion blockchain ecosystem. The platform functions similarly to traditional e-commerce applications but with several key blockchain-enabled advantages:
 
 - **Trustless Transactions**: Buyers and sellers interact through smart contracts rather than requiring third-party intermediaries
-- **Tokenized Payments**: Properties are purchased using Neutron, a Cosmos ecosystem token
+- **Tokenized Payments**: Properties are purchased using Xion, a Xion ecosystem token
 - **Escrow Protection**: A custom CosmWasm smart contract safeguards funds until transaction completion
-- **Wallet Authentication**: Users authenticate using their crypto wallets, eliminating the need for traditional account creation
-- **Interoperability**: Built on Cosmos, enabling future cross-chain functionality with other blockchain networks
+- **Wallet Authentication**: Users authenticate using their meta accounts, eliminating the need for traditional account creation
+- **Interoperability**: Built on Xion, enabling future cross-chain functionality with other blockchain networks
 - **AI Agent**
 
 This platform addresses major pain points in traditional real estate transactions: high intermediary fees, lengthy processing times, limited payment options, and vulnerability to fraud. By leveraging blockchain technology, we create a more efficient, transparent, and secure process for buying and selling landed property.
@@ -20,7 +20,7 @@ This platform addresses major pain points in traditional real estate transaction
 1. **Frontend Application**
    - React.js web application
    - Mobile-responsive design
-   - Integration with Keplr wallet and other Cosmos-compatible wallets
+   - Integration with Abstract account, Keplr wallet and other Cosmos-compatible wallets
    - Property listing interface with search, filter, and mapping capabilities
    - Transaction history and property management dashboard
 
