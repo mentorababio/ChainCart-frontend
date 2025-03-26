@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 
@@ -13,51 +12,62 @@ interface SearchModalProps {
   setIsOpen: (open: boolean) => void;
 }
 
+// Predefined property listings
+const properties = [
+  {
+    title: "Swamp Land",
+    size: "1 acre",
+    price: "0.1 XION",
+    location: "leave this, fill it later",
+    availability: "Available",
+  },
+  {
+    title: "Duplex Islands",
+    size: "Duplex Apartment",
+    price: "0.2 XION",
+    location: "leave this, fill it later",
+    availability: "Available",
+  },
+  {
+    title: "Mansion Islands",
+    size: "Mansion Apartment",
+    price: "0.25 XION",
+    location: "leave this, fill it later",
+    availability: "Available",
+  },
+];
+
 const SearchModal: React.FC<SearchModalProps> = ({ query, isOpen, setIsOpen }) => {
-  const [loading, setLoading] = useState(false);
-  const [history, setHistory] = useState<string>("");
+  const [results, setResults] = useState<string>("");
 
   useEffect(() => {
     if (isOpen && query.trim() !== "") {
-      fetchHouseHistory(query);
+      searchProperties(query);
     }
   }, [isOpen, query]);
 
-  const fetchHouseHistory = async (address: string) => {
-    setLoading(true);
-    setHistory("");
+  const searchProperties = (query: string) => {
+    const formattedQuery = query.toLowerCase();
 
-    try {
-      const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          model: "gpt-4",
-          messages: [
-            {
-              role: "system",
-              content: "You are a real estate historian. Provide a brief but detailed history of a given house address, including past owners, major events, and any notable architectural changes."
-            },
-            {
-              role: "user",
-              content: `Give me the history of this house address: ${address}`
-            }
-          ],
-          max_tokens: 300
-        },
-        {
-          headers: {
-            "Authorization": `Bearer ${import.meta.env.VITE_OPENAI_KEY}`,
-            "Content-Type": "application/json"
-          }
-        }
-      );
+    // Check if the query contains the exact title of any property
+    const matchingProperties = properties.filter((property) =>
+      formattedQuery.includes(property.title.toLowerCase())
+    );
 
-      setHistory(response.data.choices[0]?.message?.content || "No history found.");
-    } catch (error) {
-      console.error("Error fetching house history:", error);
-      setHistory("Failed to retrieve history. Please try again.");
-    } finally {
-      setLoading(false);
+    if (matchingProperties.length > 0) {
+      const formattedResults = matchingProperties
+        .map((property) => `
+          **Title of the Land:** ${property.title}
+          **Size of Land:** ${property.size}
+          **Price of the Land:** ${property.price}
+          **Location:** ${property.location}
+          **Availability:** ${property.availability}
+        `)
+        .join("\n\n");
+
+      setResults(formattedResults);
+    } else {
+      setResults("🚫 Land not currently available at the moment.");
     }
   };
 
@@ -65,7 +75,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ query, isOpen, setIsOpen }) =
     <Modal
       isOpen={isOpen}
       onRequestClose={() => setIsOpen(false)}
-      className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg mx-auto outline-none"
+      className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg mx-auto outline-none relative"
       overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center"
     >
       {/* Close Button */}
@@ -77,22 +87,21 @@ const SearchModal: React.FC<SearchModalProps> = ({ query, isOpen, setIsOpen }) =
         <X className="w-5 h-5" />
       </Button>
 
-      {/* Modal Header */}
-      <h2 className="text-xl font-semibold text-gray-900 text-center">House History</h2>
-      <p className="text-center text-gray-600 mt-2">
-        Address: <span className="font-semibold">{query}</span>
-      </p>
+      {/* Modal Header (Fixed) */}
+      <div className="sticky top-0 bg-white z-10 pb-2 border-b">
+        <h2 className="text-xl font-semibold text-gray-900 text-center">Search Results</h2>
+        <p className="text-center text-gray-600 mt-2">
+          Query: <span className="font-semibold">{query}</span>
+        </p>
+      </div>
 
-      {/* Loading State */}
-      {loading ? (
-        <div className="text-center mt-4 text-gray-500">Fetching history... ⏳</div>
-      ) : (
-        <div className="mt-4 text-gray-700 text-center">
-          <p className="text-gray-500">{history}</p>
-        </div>
-      )}
+      {/* Scrollable Search Results */}
+      <div className="mt-4 text-gray-700 whitespace-pre-line max-h-80 overflow-y-auto p-2">
+        {results}
+      </div>
     </Modal>
   );
 };
 
 export default SearchModal;
+ 
