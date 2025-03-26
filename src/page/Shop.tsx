@@ -6,7 +6,7 @@ import ShopSorting from "@/components/Shop/ShopSorting";
 
 export default function Shop() {
   return (
-    <div className="flex">
+    <div className="flex container mx-auto">
       <ShopFilters />
       <div className="flex-1">
         <ShopBanner />

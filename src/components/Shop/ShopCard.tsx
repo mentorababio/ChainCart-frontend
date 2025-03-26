@@ -20,7 +20,7 @@ export default function ShopCard({
   return (
     <div className="border p-4 rounded-lg shadow-sm bg-white relative">
       {discount && (
-        <span className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+        <span className="absolute top-2 left-2 bg-primary text-white text-xs px-2 py-1 rounded">
           {discount}%
         </span>
       )}
@@ -34,7 +34,7 @@ export default function ShopCard({
       <h3 className="text-sm font-semibold mt-2">{title}</h3>
 
       {stock > 0 ? (
-        <p className="text-green-500 text-xs">IN STOCK {stock}</p>
+        <p className="text-primary text-xs">IN STOCK {stock}</p>
       ) : (
         <p className="text-red-500 text-xs">OUT OF STOCK</p>
       )}
@@ -52,8 +52,8 @@ export default function ShopCard({
 
       <Link
         to={`/shop/${_id}`}
-        className="mt-3 block bg-blue-200 text-white text-center py-2 rounded-md text-sm font-medium
-         hover:text-white hover:bg-blue-400 transition"
+        className="mt-3 block bg-border !text-black text-center py-2 rounded-md text-sm font-medium
+         hover:!text-white hover:bg-primary transition ease-in-out duration-300"
       >
         View Details
       </Link>

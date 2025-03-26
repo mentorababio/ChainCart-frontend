@@ -6,10 +6,9 @@ import { useParams } from 'react-router-dom'
 export default function Product() {
     const {productId} = useParams()
   return (
-   <section>
-         <BackButton/>
-   <p>{productId}</p>
-   <ProductDetail productId={productId!}/>
+   <section className='container mx-auto px-3 lg:px-0'>
+      <BackButton/>
+      <ProductDetail productId={productId!}/>
    </section>
   )
 }

@@ -23,7 +23,7 @@ export default function ProductInfo({
 
   return (
     <div className="w-full p-4 md:p-6 space-y-4">
-      <h1 className="text-2xl md:text-3xl font-bold">{title}</h1>
+      <h1 className="text-lg md:text-3xl font-bold">{title}</h1>
       <div className="flex items-center mt-2 space-x-2">
         {rating && <span className="text-yellow-500">⭐ {rating.toFixed(2)}</span>}
         <span className="text-gray-500">(2 reviews)</span>
@@ -42,7 +42,7 @@ export default function ProductInfo({
             className="w-full h-[500px] border rounded-lg"
             title="Product Document"
           />
-          <a href={document_of_land} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline mt-2 block">
+          <a href={document_of_land} target="_blank" rel="noopener noreferrer" className="!text-primary underline mt-2 block">
             Open Document in New Tab
           </a>
         </div>
