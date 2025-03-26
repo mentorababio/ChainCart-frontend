@@ -20,6 +20,7 @@ const properties = [
     price: "0.1 XION",
     location: "leave this, fill it later",
     availability: "Available",
+    searchText: ["Swamp Land", "Swamp Property"]
   },
   {
     title: "Duplex Islands",
@@ -27,6 +28,7 @@ const properties = [
     price: "0.2 XION",
     location: "leave this, fill it later",
     availability: "Available",
+    searchText: ["Duplex Property", "Duplex Islands"]
   },
   {
     title: "Mansion Islands",
@@ -34,6 +36,7 @@ const properties = [
     price: "0.25 XION",
     location: "leave this, fill it later",
     availability: "Available",
+    searchText: ["Mansion Property", "Mansion Islands"]
   },
 ];
 
@@ -51,8 +54,9 @@ const SearchModal: React.FC<SearchModalProps> = ({ query, isOpen, setIsOpen }) =
 
     // Check if the query contains the exact title of any property
     const matchingProperties = properties.filter((property) =>
-      formattedQuery.includes(property.title.toLowerCase())
+      property.searchText.some((text) => formattedQuery.includes(text.toLowerCase()))
     );
+    
 
     if (matchingProperties.length > 0) {
       const formattedResults = matchingProperties
