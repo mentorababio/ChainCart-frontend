@@ -1,6 +1,6 @@
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { GasPrice } from "@cosmjs/stargate";
-import { neutronChain } from "@/config/neotron";
+import {Xion_Chain} from from "@/config/xion";
 
 // #[cw_serde]
 // pub enum ExecuteMsg {
@@ -10,14 +10,14 @@ import { neutronChain } from "@/config/neotron";
 // }
 
 // const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
-const contractAddress = 'neutron1vexhaemuahp2hfvmfmrjem3ngzrcrea5w7q2vpzzyz2ykfzw7vpq7ygurd';
+const contractAddress = 'xion1t6pp2v9fz5lsdl5ru9ynwcs322qrqe7hjpj66cqsmfjwfkukel8sesxm8y';
 
 const getClient = async () => {
   if (!window.keplr) throw new Error("Please connect your wallet first.");
 
-  const offlineSigner = window.keplr.getOfflineSigner(neutronChain.chainId);
-  return SigningCosmWasmClient.connectWithSigner(neutronChain.rpc, offlineSigner, {
-    gasPrice: GasPrice.fromString("0.025untrn"),
+  const offlineSigner = window.keplr.getOfflineSigner(Xion_Chain.chainId);
+  return SigningCosmWasmClient.connectWithSigner(Xion_Chain.rpc, offlineSigner, {
+    gasPrice: GasPrice.fromString("0.025uxion"),
   });
 };
 
