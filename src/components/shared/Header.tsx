@@ -9,6 +9,7 @@ import { headerMenu } from "@/CONSTANT/data";
 import { Link } from "react-router-dom";
 import { WalletConnect } from "../Wallet/WalletConnect";
 import Logo from "./Logo";
+import SearchBar from "../search/SearchBar";
 
 interface IMobileMenu {
   isOpen: boolean;
@@ -35,7 +36,7 @@ const MobileMenu: React.FC<IMobileMenu> = ({ isOpen, closeMobile, handleOutsideC
             <button onClick={closeMobile}  className="absolute top-5 right-5 text-white">
               <X className="w-6 h-6" />
             </button>
-            <InputField
+            {/* <InputField
               id="search"
               type="text"
               placeholder="Search..."
@@ -44,7 +45,8 @@ const MobileMenu: React.FC<IMobileMenu> = ({ isOpen, closeMobile, handleOutsideC
               icon={<SearchIcon className="h-5 w-5" />}
               onIconClick={() => console.log("Search clicked")}
               containerClassName="w-3/4"
-            />
+            /> */}
+            <SearchBar/>
             <nav>
               <ul className="flex flex-col gap-4 text-lg">
                 {headerMenu.map((item,index) => (
@@ -81,7 +83,7 @@ const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => (
       </div>
     </div>
     <div className="hidden md:flex flex-1 justify-between items-center gap-6">
-      <InputField
+      {/* <InputField
         id="search"
         type="text"
         placeholder="Search for product, house, land"
@@ -90,7 +92,8 @@ const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => (
         icon={<SearchIcon className="h-5 w-5" />}
         onIconClick={() => console.log("Search clicked")}
         containerClassName="w-full max-w-sm"
-      />
+      /> */}
+      <SearchBar/>
       <Notification />
       <SwitchButton />
       {/* <AppButton label="Connect Wallet" variant="default" /> */}
