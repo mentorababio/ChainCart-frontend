@@ -6,11 +6,14 @@ import Notification from "./Notification";
 // import { InputField } from "./InputField";
 import CategorySelector from "./CategorySelector";
 import { headerMenu } from "@/CONSTANT/data";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { WalletConnect } from "../Wallet/WalletConnect";
 import Logo from "./Logo";
 import SearchBar from "../search/SearchBar";
-import XionWallet from "../Wallet/XionWallet";
+// import XionWallet from "../Wallet/XionWallet";
+import AppButton from "./AppButton";
+import { RootState, useAppSelector } from "@/store";
+import useAuth from "../auth/hook/useAuth";
 
 interface IMobileMenu {
   isOpen: boolean;
@@ -19,6 +22,9 @@ interface IMobileMenu {
 }
 
 const MobileMenu: React.FC<IMobileMenu> = ({ isOpen, closeMobile, handleOutsideClick }) =>{
+  const navigate = useNavigate()
+  const {isAuthenticated} = useAppSelector((state:RootState)=>state.auth)
+  const {handleLogout} = useAuth()
   return(
     <AnimatePresence>
       {isOpen && (
@@ -37,16 +43,7 @@ const MobileMenu: React.FC<IMobileMenu> = ({ isOpen, closeMobile, handleOutsideC
             <button onClick={closeMobile}  className="absolute top-5 right-5 text-white">
               <X className="w-6 h-6" />
             </button>
-            {/* <InputField
-              id="search"
-              type="text"
-              placeholder="Search..."
-              value=""
-              onChange={() => {}}
-              icon={<SearchIcon className="h-5 w-5" />}
-              onIconClick={() => console.log("Search clicked")}
-              containerClassName="w-3/4"
-            /> */}
+            
             <SearchBar/>
             <nav>
               <ul className="flex flex-col gap-4 text-lg">
@@ -58,7 +55,13 @@ const MobileMenu: React.FC<IMobileMenu> = ({ isOpen, closeMobile, handleOutsideC
             <Notification />
             <SwitchButton />
             {/* <WalletConnect/> */}
-            <XionWallet/>
+            {/* <XionWallet/> */}
+            {
+              isAuthenticated
+              ?
+              <AppButton label="Log Out" onClick={handleLogout} size={"lg"}/>:
+            <AppButton label="Get Start" onClick={()=>navigate('/auth')} size={"lg"}/>
+            }
           </div>
         </motion.div>
       )}
@@ -71,7 +74,11 @@ interface ITopHeader {
   closeMobile?: () => void;
 }
 
-const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => (
+const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => {
+  const navigate = useNavigate()
+  const {isAuthenticated} = useAppSelector((state:RootState)=>state.auth)
+  const {handleLogout} = useAuth()
+  return(
   <section className="p-3 flex items-center justify-between gap-2 lg:container lg:mx-auto">
     {/* <h2 className="text-lg font-bold text-warp-100 px-2">warppay</h2> */}
     <Logo/>
@@ -79,32 +86,35 @@ const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => (
       {/* <AppButton label="Connect" variant="default" /> */}
       <div className="flex items-center gap-4">
         {/* <WalletConnect/> */}
-        <XionWallet/>
+        {/* <XionWallet/> */}
+        {
+              isAuthenticated
+              ?
+              <AppButton label="Log Out" onClick={handleLogout} size={"lg"}/>:
+            <AppButton label="Get Start" onClick={()=>navigate('/auth')} size={"lg"}/>
+            }
         <button onClick= {closeMobile} className="text-white">
           {isOpen ? <X className="text-warp-100 w-6 h-6" /> : <Menu className="text-warp-100 w-6 h-6" />}
         </button>
       </div>
     </div>
     <div className="hidden md:flex flex-1 justify-between items-center gap-6">
-      {/* <InputField
-        id="search"
-        type="text"
-        placeholder="Search for product, house, land"
-        value=""
-        onChange={() => {}}
-        icon={<SearchIcon className="h-5 w-5" />}
-        onIconClick={() => console.log("Search clicked")}
-        containerClassName="w-full max-w-sm"
-      /> */}
       <SearchBar/>
       <Notification />
       <SwitchButton />
       {/* <AppButton label="Connect Wallet" variant="default" /> */}
       {/* <WalletConnect/> */}
-      <XionWallet/>
+      {/* <XionWallet/> */}
+      {
+              isAuthenticated
+              ?
+              <AppButton label="Log Out" onClick={handleLogout} size={"lg"}/>:
+              <AppButton label="Get Start" onClick={()=>navigate('/auth')} size={"lg"}/>
+            }
     </div>
   </section>
 );
+}
 
 const BottomHeader: React.FC = () => (
   <section className="p-3 flex items-center border-t border-gray-700 gap-6 container mx-auto">
@@ -121,7 +131,7 @@ const BottomHeader: React.FC = () => (
 
 
 const Header: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);  
 
   const closeMobile = () => setIsOpen((prev) => !prev);
   const handleOutsideClick = (e: MouseEvent<HTMLDivElement>) => {

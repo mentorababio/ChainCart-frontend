@@ -30,8 +30,6 @@ export const useProductActions = (_id: string) => {
       const response: IApiResponse = await addToCart({ quantity, productId: _id }).unwrap();
       dispatch(addToCartReducer({ _id }));  // Use renamed reducer function
       toast.success(response.message || "Added to cart successfully!");
-
-      console.log(response);
     } catch (error: unknown) {
       console.error("Error adding to cart:", error);
       toast.error("Failed to add to cart.");
@@ -47,10 +45,6 @@ export const useProductActions = (_id: string) => {
         toast.success(response.message || "Order available. Proceeding with payment...");
         const available = response.data as IAvailableOrder;
         const { totalAmount, sellerAddress } = available;
-
-        console.log("Order details:", available);
-        console.log("Processing payment...");
-        toast.info("Processing payment...");
 
         const escrowResult = await initEscrow(
           user!.walletAddress,

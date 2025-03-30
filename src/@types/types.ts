@@ -20,10 +20,11 @@ export interface CategoryCardProps {
     SUPERADMIN = 'superadmin',
   }
   
- export interface IUserResponse {
-  accessToken: string;
-  result: IUserDetails;
-}
+  export interface IUserResponse {
+    accessToken: string;
+    result?: IUserDetails;
+    user?: IUserDetails;
+  }  
 
 export interface IMessage {
   status: number,
@@ -153,6 +154,13 @@ export interface IUserOrderHistory {
   createdAt: string;
 }
  
+
+export type IXionTransact ={
+  transactionHash: string;
+    gasUsed: bigint;
+    height: number;
+    events: readonly Event[];
+}
 /**
 * * learn  ReturnType
  */

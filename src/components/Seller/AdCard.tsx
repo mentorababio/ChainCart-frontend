@@ -6,7 +6,7 @@ export type IAddCardProps = {
   title: string;
   image_of_land: string;
   price: number;
-  stock?: number; // Made optional to handle undefined cases
+  stock?: number; 
   _id?: string;
 };
 
@@ -15,11 +15,8 @@ const AdCard = ({ title, image_of_land, stock, _id, price }: IAddCardProps) => {
 
   const handleProductDelete = async (productId?: string) => {
     if (!productId) {
-      console.error("Product ID is missing");
       return;
     }
-
-    console.log(productId, "productId");
     try {
       const result: IApiResponse = await deleteProduct({ productId }).unwrap();
       console.log(result);
@@ -37,7 +34,7 @@ const AdCard = ({ title, image_of_land, stock, _id, price }: IAddCardProps) => {
       />
       <div className="flex-1">
         <h3 className="font-medium">{title}</h3>
-        <h3 className="font-medium text-red-500">Price NTRN {price}</h3>
+        <h3 className="font-medium text-red-500">Price XION {price}</h3>
         <p className={`text-sm ${stock && stock > 0 ? "text-green-400" : "text-red-500"}`}>
           {stock && stock > 0 ? `Available stock: ${stock}` : "Out of Stock"}
         </p>

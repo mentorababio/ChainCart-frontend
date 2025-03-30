@@ -15,7 +15,6 @@ export const confirmOrder = async (
       transactionHash,
     }).unwrap();
 
-    console.log("Order confirmed:", response);
     return response;
   } catch (error) {
     console.error("Error confirming order:", error);

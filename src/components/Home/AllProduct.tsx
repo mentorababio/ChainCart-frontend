@@ -7,13 +7,7 @@ import { useAllProductQuery } from '@/api/prodService'
 
 export default function AllProduct() {
   const { isLoading, data, error } = useAllProductQuery({});
-  
-//   :51.51381330519996
 
-// Lng:-0.09054358532943897
-  // useEffect(()=>{
-  //   console.log(getLocation('51.51381330519996','-0.09054358532943897'))
-  // },[])
   return (
     <div className="md:col-span-3">
 

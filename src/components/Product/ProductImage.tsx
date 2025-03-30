@@ -7,7 +7,6 @@ interface ProductImageProps {
 
 export default function ProductImage({ image_of_land }: ProductImageProps) {
   const [selectedImage, setSelectedImage] = useState(image_of_land[0]);
-  console.log(image_of_land,'Image of land')
 
   const handlePrev = () => {
     const index = image_of_land.indexOf(selectedImage);

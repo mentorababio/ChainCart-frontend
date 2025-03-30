@@ -1,6 +1,7 @@
 import { IProduct } from "@/@types/types";
 import AppButton from "../shared/AppButton";
 import { useProductActions } from "@/hooks/useProductActions";
+import { useXionAction } from "@/hooks/useXionAction";
 
 interface ProductInfoProps extends IProduct {
   oldPrice?: number;
@@ -18,8 +19,8 @@ export default function ProductInfo({
   _id,
   document_of_land,
 }: ProductInfoProps) {
-  const { quantity, increment, decrement, isAddingToCart, orderLoad, orderConfirmLoad, handleAddToCart, handleBuyOrder,keepLoad } =
-    useProductActions(_id);
+  const {  isAddingToCart,  handleAddToCart } = useProductActions(_id);
+    const {handleBuyXionOrder,decrement,increment,quantity,orderConfirmLoad,orderLoad,keepLoad}=useXionAction()
 
   return (
     <div className="w-full p-4 md:p-6 space-y-4">
@@ -56,7 +57,7 @@ export default function ProductInfo({
 
       <div className="flex flex-col sm:flex-row gap-3 mt-6">
         <AppButton label="Add To Cart" isLoading={isAddingToCart} onClick={handleAddToCart} disabled={quantity === 0} />
-        <AppButton label="Buy Now" disabled={quantity === 0} onClick={handleBuyOrder} isLoading={orderLoad || orderConfirmLoad || keepLoad} />
+        <AppButton label="Buy Now" disabled={quantity === 0} onClick={()=>handleBuyXionOrder(_id,quantity)} isLoading={orderLoad || orderConfirmLoad || keepLoad} />
       </div>
     </div>
   );

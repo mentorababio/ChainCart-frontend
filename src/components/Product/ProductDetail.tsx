@@ -18,10 +18,6 @@ export default function ProductDetail({
     skip: !productId,
   });
   
-  // console.log(data,'useSingleProductQuery')
-  
-  // console.log(productId, "productId");
-  // console.log(data?.data?.product);
 
   const pImage = data?.data?.product?.image_of_land;
   const image = [pImage, pImage];

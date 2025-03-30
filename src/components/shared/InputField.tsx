@@ -1,26 +1,25 @@
 import React from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-interface FormFieldProps {
+interface InputFieldProps {
   id: string;
   label?: string;
   placeholder: string;
-  type?: "text" | "email" | "tel" | "textarea" | "password" | 'number' | 'file';// "textarea" | "text" | "email" | "tel" | "password" 
+  type?: "text" | "email" | "tel" | "password" | "number" | "file";
   required?: boolean;
   className?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
   errorMessage?: string | boolean;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   containerClassName?: string;
-  icon?: React.ReactNode; 
-  onIconClick?: () => void; 
+  icon?: React.ReactNode;
+  onIconClick?: () => void;
 }
 
 export function InputField({
@@ -39,7 +38,7 @@ export function InputField({
   errorMessage,
   icon,
   onIconClick,
-}: FormFieldProps) {
+}: InputFieldProps) {
   const [isPasswordVisible, setIsPasswordVisible] = React.useState<boolean>(false);
 
   const togglePasswordVisibility = () => {
@@ -59,68 +58,48 @@ export function InputField({
         </Label>
       )}
       <div className="relative w-full">
-        {type === "textarea" ? (
-          <Textarea
-            id={id}
-            placeholder={placeholder}
-            required={required}
-            value={value}
-            name={id}
-            disabled={disabled}
-            onChange={onChange}
-            onBlur={onBlur}
-            onFocus={onFocus}
-            className={`min-h-[200px] bg-[#F9F9F9] dark:bg-gray-800 text-black dark:text-white py-6 ${borderColor} ${className}`}
-          />
-        ) : (
-          <>
-            <Input
-              id={id}
-              type={type === "password" && isPasswordVisible ? "text" : type}
-              placeholder={placeholder}
-              required={required}
-              value={value}
-              disabled={disabled}
-              name={id}
-              onChange={onChange}
-              onBlur={onBlur}
-              onFocus={onFocus}
-              className={`bg-[#F9F9F9] dark:bg-gray-800 text-black dark:text-white py-6 pr-10 ${borderColor} ${className}`}
-              autoComplete={type === "password" ? "current-password" : "new-password"}
-              step={type === "number" ? "0.0001" : undefined}
-              min={type === "number" ? "0" : undefined}
-              
-            />
+        <Input
+          id={id}
+          name={id}
+          type={type === "password" && isPasswordVisible ? "text" : type}
+          placeholder={placeholder}
+          required={required}
+          value={value}
+          disabled={disabled}
+          onChange={onChange}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          className={`bg-[#F9F9F9] dark:bg-gray-800 text-black dark:text-white py-6 pr-10 ${borderColor} ${className}`}
+          autoComplete={type === "password" ? "current-password" : "new-password"}
+          step={type === "number" ? "0.0001" : undefined}
+          min={type === "number" ? "0" : undefined}
+        />
 
-
-            {icon && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
-                onClick={onIconClick}
-              >
-                {icon}
-              </Button>
-            )}
-
-            {/* Password Toggle Button */}
-            {type === "password" && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={togglePasswordVisibility}
-              >
-                {isPasswordVisible ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
-              </Button>
-            )}
-          </>
+        {icon && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+            onClick={onIconClick}
+          >
+            {icon}
+          </Button>
         )}
-        {errorMessage && <p className="absolute text-red-500 text-sm mt-1">{errorMessage}</p>}
+
+        {type === "password" && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+            onClick={togglePasswordVisibility}
+          >
+            {isPasswordVisible ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
+          </Button>
+        )}
       </div>
+      {errorMessage && <p className="text-red-500 text-sm mt-1">{errorMessage}</p>}
     </div>
   );
 }

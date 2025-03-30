@@ -3,73 +3,50 @@ import AppButton from "../shared/AppButton";
 import { Copy } from "lucide-react";
 import { maskAddress } from "@/utils/maskAddress";
 import { RootState, useAppSelector } from "@/store";
-import { cancelEscrow, releaseFunds } from "@/utils/escrowService";
+// import { cancelEscrow, releaseFunds } from "@/utils/escrowService";
 import { IApiResponse, IUserOrderHistory } from "@/@types/types";
 import { useUpdateOrderStatusMutation } from "@/api/orderService";
+import { useToast } from "@/hooks/useToast";
 
 interface HistoryCardProps {
   purchase: IUserOrderHistory;
   showActions?: boolean;
 }
 
-export default function HistoryCard({ purchase, showActions = false }: HistoryCardProps) {
+export default function HistoryCard({
+  purchase,
+  showActions = false,
+}: HistoryCardProps) {
   const [copied, setCopied] = useState(false);
   const { user } = useAppSelector((state: RootState) => state.auth);
-  const [error, setError] = useState("");
-  const [releaseFund, { isLoading }] = useUpdateOrderStatusMutation();
+  const [releaseorCancelFund, { isLoading }] = useUpdateOrderStatusMutation();
+   const toast  = useToast();
 
-  const handleReleaseFunds = async () => {
+  const handleEscrowAction = async (action: "release" | "cancel") => {
+    toast.dismiss();
+    const loadingToast = toast.loading(`${action} to wallet...`);
     try {
+      toast.dismiss(loadingToast);
       if (!user?.walletAddress) {
-        setError("Wallet address is required to release funds.");
+        toast.error("Wallet address is required to release funds.");
         return;
       }
-      setError("");
-
-      const releaseFundResult = await releaseFunds(user.walletAddress);
-
-      if (releaseFundResult?.transactionHash) {
-        const response: IApiResponse = await releaseFund({
-          status: "release",
-          orderId: purchase._id,
-        }).unwrap();
-
-        console.log("Order status updated:", response);
-      } else {
-        console.log("Release fund failed: Transaction failed");
-      }
+      const response: IApiResponse = await releaseorCancelFund({
+        status: action,
+        orderId: purchase._id,
+        buyerAddress: user.walletAddress,
+      }).unwrap();
+      toast.success(response.message)
     } catch (error) {
-      console.error("Error releasing funds:", error);
-      setError("Failed to release funds. Please try again.");
-    }
-  };
-  const handleCancelOrder = async () => {
-    try {
-      if (!user?.walletAddress) {
-        setError("Wallet address is required to release funds.");
-        return;
-      }
-      setError("");
-
-      const cancelFundofOrderResult = await cancelEscrow(user.walletAddress);
-
-      if (cancelFundofOrderResult?.transactionHash) {
-        const response: IApiResponse = await releaseFund({
-          status: "canceled",
-          orderId: purchase._id,
-        }).unwrap();
-
-        console.log("Order status updated:", response);
-      } else {
-        console.log("Release fund failed: Transaction failed");
-      }
-    } catch (error) {
-      console.error("Error releasing funds:", error);
-      setError("Failed to release funds. Please try again.");
+      console.log(error)
+      toast.dismiss(loadingToast);
+      toast.error(`Error!! Failed to ${action} funds. Please try again.`)
+    }finally{
+      toast.dismiss(loadingToast);
     }
   };
 
-  const { txHash, amount } = purchase.payment;
+  const { txHash, amount } = purchase.payment || {};
 
   const handleCopy = async () => {
     try {
@@ -108,12 +85,18 @@ export default function HistoryCard({ purchase, showActions = false }: HistoryCa
 
       <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
         {purchase.items.map((item) => (
-          <div key={item._id} className="flex items-center gap-4 border p-2 rounded">
-            <img
-              src={item.product?.image_of_land}
-              alt="Product"
-              className="w-24 h-24 object-cover rounded-lg"
-            />
+          <div
+            key={item._id}
+            className="flex items-center gap-4 border p-2 rounded"
+          >
+            {item.product?.image_of_land && (
+              <img
+                src={item.product.image_of_land}
+                alt="Product"
+                className="w-24 h-24 object-cover rounded-lg"
+              />
+            )}
+
             <div>
               <p className="font-semibold">Price: {item?.price} NTRN</p>
               <p>Quantity: {item.quantity}</p>
@@ -125,16 +108,17 @@ export default function HistoryCard({ purchase, showActions = false }: HistoryCa
 
       {showActions && (
         <div className="mt-4 flex gap-4">
-          <AppButton 
-          className="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded" 
-          isLoading={isLoading}
+          <AppButton
+            className="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded"
+            isLoading={isLoading}
             disabled={isLoading || !user?.walletAddress}
-          onClick={handleCancelOrder}
-           label="Cancel Order" 
+            onClick={() => handleEscrowAction("cancel")}
+            label="Cancel Order"
           />
+
           <AppButton
             className="bg-green-500 text-white hover:bg-green-600 px-4 py-2 rounded"
-            onClick={handleReleaseFunds}
+            onClick={() => handleEscrowAction("release")}
             disabled={isLoading || !user?.walletAddress}
             label="Release Fund"
             isLoading={isLoading}
@@ -142,7 +126,6 @@ export default function HistoryCard({ purchase, showActions = false }: HistoryCa
         </div>
       )}
 
-      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
 }

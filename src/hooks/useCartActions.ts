@@ -26,7 +26,6 @@ export function useCartActions() {
       const response: IApiResponse = await removeCart({ productId, quantity }).unwrap();
       dispatch(deleteFromCartReducer({_id:productId}))
       toast.success(response.message || "Item was successfully removed from your cart.!");
-      console.log("Removed:", response);
     } catch (error) {
       console.error("Error removing item:", error);
       toast.error("Failed to remove item from cart.");
@@ -38,7 +37,6 @@ export function useCartActions() {
       const response: IApiResponse = await deleteCart({ cartId }).unwrap();
       toast.success(response.message || "All items have been removed from your cart.");
       dispatch(clearCartFromReducer())
-      console.log("Removed:", response);
     } catch (error) {
       console.error("Error clearing cart:", error);
       toast.error("Failed to clear the cart.");
@@ -50,15 +48,11 @@ export function useCartActions() {
     
     try {
       const response: IApiResponse = await buyFromCart({ productId, quantity }).unwrap();
-  
-      console.log("buy from cart:", response);
+
       if (response.status === 200) {
         toast.success(response.message || "Proceeding with payment...");
         const available = response.data as IAvailableOrder;
         const { totalAmount, sellerAddress } = available;
-
-        console.log("Order details:", available);
-        console.log("Processing payment...");
 
         const escrowResult = await initEscrow(
           user!.walletAddress,

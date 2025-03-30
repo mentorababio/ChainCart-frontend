@@ -28,10 +28,10 @@ export const orderService = baseDomain.injectEndpoints({
     }),
 
     UpdateOrderStatus: build.mutation({
-      query: ({ orderId, status }) => ({
-        url: `/order/${orderId}/status`,
+      query: ({ orderId, status,buyerAddress }:{orderId:string, status:"release" | "cancel",buyerAddress:string}) => ({
+        url: `/order/escrow/${orderId}`, // `/api/order/${orderId}/escrow?state=${fundState}`,
         method: "PUT",
-        body: { status },
+        body: { status ,buyerAddress},
       }),
       invalidatesTags: ["Order", "Product"],
     }),

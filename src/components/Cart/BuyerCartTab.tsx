@@ -6,6 +6,7 @@ import CartItemCard from "./CartItemCard";
 import useSetCart from "@/hooks/useSetCart";
 import { useAppDispatch } from "@/store";
 import { setQuantity as setQuantityFromReducer } from "@/features/cartSlice";
+import { useXionAction } from "@/hooks/useXionAction";
 
 export default function BuyerCartTab() {
   const [itemQuantities, setItemQuantities] = useState<Record<string, number>>(
@@ -34,12 +35,14 @@ export default function BuyerCartTab() {
     handleClearCart,
     removeLoad,
     deleteLoad,
-    handleBuyFromCart,
+    // handleBuyFromCart,
     buyLoad,
     orderConfirmLoad,
     keepLoad,
     // buyLoading
   } = useCartActions();
+  
+  const {handleBuyFromXion} = useXionAction()
   
   const incrementItem = (itemId: string) => {
     setItemQuantities((prev) => {
@@ -92,7 +95,9 @@ export default function BuyerCartTab() {
                   itemQuantities={itemQuantities}
                   incrementItem={incrementItem}
                   decrementItem={decrementItem}
-                  handleBuyFromCart={handleBuyFromCart}
+                  
+                  handleBuyFromCart={handleBuyFromXion}
+                  // handleBuyFromCart={handleBuyFromCart}
                   handleRemoveCart={handleRemoveCart}
                   buyLoad={buyLoad}
                   orderConfirmLoad={orderConfirmLoad}

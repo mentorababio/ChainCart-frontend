@@ -38,10 +38,12 @@ export const legacyConfig = {
 // New treasury contract config
 //? xion
 // xion1uyq35hcqnfqcgygkrvkee3slx58wwc357zpqdk7hcd78fz4wtyqqtm3c76
-const treasuryConfig = {
-  treasury: "xion1pznw0ptf2gfkvc6u7tu6k09sm26m99dlfksen5cm2gqfp4qkmjgqzhgr4k", // Example XION treasury contract
+export const treasuryConfig = {
+   // Example XION treasury contract
+  treasury: "xion1pznw0ptf2gfkvc6u7tu6k09sm26m99dlfksen5cm2gqfp4qkmjgqzhgr4k",
    rpcUrl: "https://rpc.xion-testnet-2.burnt.com:443",
    restUrl: "https://api.xion-testnet-2.burnt.com/",
+   
   // Optional params to activate mainnet config
   // rpcUrl: "https://rpc.xion-mainnet-1.burnt.com:443",
   // restUrl: "https://api.xion-mainnet-1.burnt.com:443",
@@ -50,14 +52,22 @@ const router = Router();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Provider store={store}>
        <AbstraxionProvider
-        // config={{}}
-        config={treasuryConfig}
+        config={
+        {
+          treasury: "xion1pznw0ptf2gfkvc6u7tu6k09sm26m99dlfksen5cm2gqfp4qkmjgqzhgr4k",
+          rpcUrl: "https://rpc.xion-testnet-2.burnt.com:443",
+          restUrl: "https://api.xion-testnet-2.burnt.com/",
+          // callbackUrl:'/',
+                    
+        }
+        }
+        // config={treasuryConfig}
         >   
+    <Provider store={store}>
       <RouterProvider router={router} />
       <Toaster expand visibleToasts={9} position="top-center"  />
-       </AbstraxionProvider>
     </Provider>
+       </AbstraxionProvider>
   </StrictMode>
 );

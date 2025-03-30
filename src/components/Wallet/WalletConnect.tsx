@@ -54,8 +54,8 @@ export const WalletConnect: React.FC<IWalletConnectProps> = ({ buttonProps }) =>
             isAuthenticated: true,
             user: {
               id: successResponse.accessToken,
-              roles: successResponse.result.role,
-              walletAddress: successResponse.result.walletAddress,
+              roles: successResponse.result!.role,
+              walletAddress: successResponse.result!.walletAddress,
             },
           })
         );

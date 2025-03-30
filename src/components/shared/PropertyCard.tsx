@@ -4,14 +4,8 @@ import { RootState, useAppSelector } from "@/store";
 import { WalletConnect } from "../Wallet/WalletConnect";
 import { IProduct } from "@/@types/types";
 import { useProductActions } from "@/hooks/useProductActions";
-import {
-  setKey,
-  geocode,
-  RequestType,
-} from "react-geocode";
-import { useState } from "react";
 
-setKey(import.meta.env.VITE_GEOCODE);
+// setKey(import.meta.env.VITE_GEOCODE);
 
 export interface PropertyCardProps extends IProduct {
   discount?: number;
@@ -35,16 +29,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   isAddToCart = false,
   _id
 }) => {
-  const [address, setAddress] = useState<string | null>(null);
+  // const [address, setAddress] = useState<string | null>(null);
   const { isAuthenticated } = useAppSelector((state: RootState) => state.auth);
   const {isAddingToCart,handleAddToCart} = useProductActions(_id)
 
-  geocode(RequestType.LATLNG, `${mapping_location.lat}, ${mapping_location.lng}`)
-  .then(({ results }) => {
-    const address = results[0].formatted_address;
-    setAddress(address);
-  })
-  .catch(console.error);
 
   return (
     <Card className="border border-gray-200 shadow-md rounded-lg overflow-hidden p-0">
@@ -64,9 +52,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
       <CardContent className="px-4 py-2">
         <h3 className="text-lg font-semibold text-input">{title}</h3>
-        {/* <p className="text-gray-500 text-sm">Lat:{mapping_location.lat}</p>
-        <p className="text-gray-500 text-sm">Lng:{mapping_location.lng}</p> */}
-        <p className="text-main text-sm truncate">{address}</p>
+        <p className="text-gray-500 text-sm">Lat:{mapping_location.lat}</p>
+        <p className="text-gray-500 text-sm">Lng:{mapping_location.lng}</p>
+        {/* <p className="text-main text-sm truncate">{address}</p> */}
 
         <div className="flex items-center gap-2 mt-2">
           {oldPrice && (

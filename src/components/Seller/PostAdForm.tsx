@@ -14,6 +14,7 @@ import AppButton from "../shared/AppButton";
 import { IApiResponse, ICategory } from "@/@types/types";
 import SelectField from "../shared/SelectField";
 import { useToast } from "@/hooks/useToast";
+import { TextareaField } from "../shared/TextareaField";
 
 export default function PostAdForm() {
   const [formData, setFormData] = useState({
@@ -113,14 +114,10 @@ export default function PostAdForm() {
         formDataToSend.append("document_of_land", formData.document_of_land);
       }
   
-      console.log("Submitting FormData:", formDataToSend);
-  
       const result: IApiResponse = await createProduct(formDataToSend).unwrap();
       
       toast.dismiss(loadingToast);
       toast.success(result.message || "Ad successfully posted!");
-      
-      console.log("API Response:", result);
     } catch (error) {
       toast.dismiss(loadingToast);
       console.error("Error submitting form:", error);
@@ -160,7 +157,7 @@ export default function PostAdForm() {
             <InputField
               id="price"
               type="number"
-              label="Price (NTRN)"
+              label="Price (XION)"
               placeholder="Enter price"
               required
               value={formData.price}
@@ -177,8 +174,6 @@ export default function PostAdForm() {
               }
               defaultValue={formData.category}
             />
-
-            {/* <InputField id="category" label="Category" placeholder="Enter category" required value={formData.category} onChange={handleChange} /> */}
             <InputField
               id="stock"
               label="Stock"
@@ -216,9 +211,9 @@ export default function PostAdForm() {
 
         <Card className="p-4 border">
           {/* <h2 className="text-lg font-semibold border-b pb-2">Description</h2> */}
-          <InputField
+          <TextareaField
             id="description"
-            type="textarea"
+            // type="textarea"
             label="Description"
             placeholder="Enter a detailed description..."
             required
