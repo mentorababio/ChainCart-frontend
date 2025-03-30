@@ -48,6 +48,7 @@ export function TextareaField({
         placeholder={placeholder}
         required={required}
         value={value}
+        name={id}
         disabled={disabled}
         onChange={onChange}
         onBlur={onBlur}

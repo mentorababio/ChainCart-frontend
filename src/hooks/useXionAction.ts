@@ -18,9 +18,7 @@ export function useXionAction() {
   const [sendToEscrow,{isLoading:loadEscrow}]=useSendToXionEscrowMutation()
     const [quantity, setQuantity] = useState(1);
       const [orderAvailable, { isLoading: orderLoad }] = useOrderAvailableMutation();
-    // const [keepLoad, setKeepLoad] = useState(false);
-    // const toast = useToast();
-    // const dispatch = useAppDispatch();
+    
   
     const increment = () => setQuantity((prev) => prev + 1);
     const decrement = () => setQuantity((prev) => (prev > 0 ? prev - 1 : 0));
@@ -55,9 +53,10 @@ export function useXionAction() {
           sellerAddress,
           amount: totalAmount.toString(),
         }).unwrap();
-  
+        console.log(escrowResponse)
         if (escrowResponse.status === 200) {
           const escrowConfirm = escrowResponse.data as IXionTransact;
+          console.log({transactionHash:escrowConfirm.transactionHash})
           await confirmOrder(orderConfirm, productId, quantity, escrowConfirm.transactionHash);
           toast.success("Your order has been placed successfully.");
         } else {
@@ -104,6 +103,7 @@ export function useXionAction() {
     
           if (escrowResponse.status === 200) {
             const escrowConfirm = escrowResponse.data as IXionTransact;
+            console.log({transactionHash:escrowConfirm.transactionHash})
             await confirmOrder(orderConfirm, productId, quantity, escrowConfirm.transactionHash);
             toast.success("Your order has been placed successfully.");
           } else {
