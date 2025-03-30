@@ -59,16 +59,16 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         <div className="flex items-center gap-2 mt-2">
           {oldPrice && (
             <span className="text-gray-400 line-through text-sm">
-             <small className="text-sm">NTRN</small> {oldPrice}
+             <small className="text-sm">XION</small> {oldPrice}
             </span>
           )}
           {newPrice ? (
             <span className="text-primary text-lg font-bold">
-              <small className="text-sm">NTRN</small> {newPrice}
+              <small className="text-sm">XION</small> {newPrice}
             </span>
           ) : (
             <span className="text-primary text-lg font-bold">
-              <small className="text-sm">NTRN</small> {price}
+              <small className="text-sm">XION</small> {price}
             </span>
           )}
         </div>
