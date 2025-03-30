@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import AppButton from "./AppButton";
 import { RootState, useAppSelector } from "@/store";
-import { WalletConnect } from "../Wallet/WalletConnect";
+// import { WalletConnect } from "../Wallet/WalletConnect";
 import { IProduct } from "@/@types/types";
 import { useProductActions } from "@/hooks/useProductActions";
 
@@ -79,16 +79,17 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         )}
 
         {isAddToCart && (
-          isAuthenticated ? (
+          isAuthenticated && (
             <AppButton
               label={"Add To Cart"}
               isLoading={isAddingToCart}
               onClick={handleAddToCart}
               className="bg-primary text-white w-full mt-3"
             />
-          ) : (
-            <WalletConnect buttonProps={{ className: "w-full mt-3" }} />
           )
+          //  : (
+          //   <WalletConnect buttonProps={{ className: "w-full mt-3" }} />
+          // )
         )}
       </CardContent>
     </Card>
