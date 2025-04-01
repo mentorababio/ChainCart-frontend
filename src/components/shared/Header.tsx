@@ -14,6 +14,7 @@ import SearchBar from "../search/SearchBar";
 import AppButton from "./AppButton";
 import { RootState, useAppSelector } from "@/store";
 import useAuth from "../auth/hook/useAuth";
+import AvatarMenu from "./Avatar";
 
 interface IMobileMenu {
   isOpen: boolean;
@@ -90,7 +91,7 @@ const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => {
         {
               isAuthenticated
               ?
-              <AppButton label="Log Out" onClick={handleLogout} size={"lg"}/>:
+              <AvatarMenu/>:
             <AppButton label="Get Start" onClick={()=>navigate('/auth')} size={"lg"}/>
             }
         <button onClick= {closeMobile} className="text-white">
@@ -108,7 +109,7 @@ const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => {
       {
               isAuthenticated
               ?
-              <AppButton label="Log Out" onClick={handleLogout} size={"lg"}/>:
+              <AvatarMenu/>:
               <AppButton label="Get Start" onClick={()=>navigate('/auth')} size={"lg"}/>
             }
     </div>
