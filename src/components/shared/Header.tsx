@@ -78,7 +78,7 @@ interface ITopHeader {
 const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => {
   const navigate = useNavigate()
   const {isAuthenticated} = useAppSelector((state:RootState)=>state.auth)
-  const {handleLogout} = useAuth()
+  // const {handleLogout} = useAuth()
   return(
   <section className="p-3 flex items-center justify-between gap-2 lg:container lg:mx-auto">
     {/* <h2 className="text-lg font-bold text-warp-100 px-2">warppay</h2> */}

@@ -31,7 +31,7 @@ const ProfileSection = () => {
     <Card className="w-full md:w-1/3 p-6 shadow-lg rounded-2xl bg-white dark:bg-gray-900">
       <div className="flex flex-col items-center text-center">
         
-        <Avatar className="w-24 h-24 border-4 border-blue-500">
+        <Avatar className="w-24 h-24 border-4 border-primary">
           <AvatarImage src="/avatar.jpg" alt="User Avatar" />
           <AvatarFallback>JD</AvatarFallback>
         </Avatar>
