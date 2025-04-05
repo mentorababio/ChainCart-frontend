@@ -6,7 +6,7 @@ import Router from "./RouteLayout";
 import { store } from "./store";
 import { Provider } from "react-redux";
 import { Toaster } from 'sonner';
-// import { AbstraxionProvider } from "@burnt-labs/abstraxion";
+import { AbstraxionProvider } from "@burnt-labs/abstraxion";
 // import "@burnt-labs/abstraxion/dist/index.css";
 
 
@@ -52,7 +52,7 @@ const router = Router();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-       {/* <AbstraxionProvider
+       <AbstraxionProvider
         config={
         {
           treasury: "xion1pznw0ptf2gfkvc6u7tu6k09sm26m99dlfksen5cm2gqfp4qkmjgqzhgr4k",
@@ -63,11 +63,11 @@ createRoot(document.getElementById("root")!).render(
         }
         }
         // config={treasuryConfig}
-        >    */}
+        >    
     <Provider store={store}>
       <RouterProvider router={router} />
       <Toaster expand visibleToasts={9} position="top-center"  />
     </Provider>
-       {/* </AbstraxionProvider> */}
+       </AbstraxionProvider>
   </StrictMode>
 );

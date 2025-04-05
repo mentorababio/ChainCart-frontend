@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import { WalletConnect } from "../Wallet/WalletConnect";
 import Logo from "./Logo";
 import SearchBar from "../search/SearchBar";
-// import XionWallet from "../Wallet/XionWallet";
+import XionWallet from "../Wallet/XionWallet";
 import AppButton from "./AppButton";
 import { RootState, useAppSelector } from "@/store";
 import useAuth from "../auth/hook/useAuth";
@@ -56,7 +56,7 @@ const MobileMenu: React.FC<IMobileMenu> = ({ isOpen, closeMobile, handleOutsideC
             <Notification />
             <SwitchButton />
             {/* <WalletConnect/> */}
-            {/* <XionWallet/> */}
+            <XionWallet/>
             {
               isAuthenticated
               ?
@@ -87,7 +87,7 @@ const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => {
       {/* <AppButton label="Connect" variant="default" /> */}
       <div className="flex items-center gap-4">
         {/* <WalletConnect/> */}
-        {/* <XionWallet/> */}
+        <XionWallet/>
         {
               isAuthenticated
               ?
@@ -105,7 +105,7 @@ const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => {
       <SwitchButton />
       {/* <AppButton label="Connect Wallet" variant="default" /> */}
       {/* <WalletConnect/> */}
-      {/* <XionWallet/> */}
+      <XionWallet/>
       {
               isAuthenticated
               ?
