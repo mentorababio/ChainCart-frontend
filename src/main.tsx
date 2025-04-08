@@ -1,13 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
+import "@burnt-labs/abstraxion/dist/index.css";
+import "@burnt-labs/ui/dist/index.css";
 import { RouterProvider } from "react-router-dom";
 import Router from "./RouteLayout";
 import { store } from "./store";
 import { Provider } from "react-redux";
 import { Toaster } from 'sonner';
 import { AbstraxionProvider } from "@burnt-labs/abstraxion";
-// import "@burnt-labs/abstraxion/dist/index.css";
+import "./index.css";
 
 
 // const seatContractAddress =
@@ -35,19 +36,11 @@ import { AbstraxionProvider } from "@burnt-labs/abstraxion";
 //   // restUrl: "https://api.xion-mainnet-1.burnt.com:443",
 // };
 
-// New treasury contract config
-//? xion
-// xion1uyq35hcqnfqcgygkrvkee3slx58wwc357zpqdk7hcd78fz4wtyqqtm3c76
-// export const treasuryConfig = {
-//    // Example XION treasury contract
-//   treasury: "xion1pznw0ptf2gfkvc6u7tu6k09sm26m99dlfksen5cm2gqfp4qkmjgqzhgr4k",
-//    rpcUrl: "https://rpc.xion-testnet-2.burnt.com:443",
-//    restUrl: "https://api.xion-testnet-2.burnt.com/",
-   
-//   // Optional params to activate mainnet config
-//   // rpcUrl: "https://rpc.xion-mainnet-1.burnt.com:443",
-//   // restUrl: "https://api.xion-mainnet-1.burnt.com:443",
-// };
+/**
+ * Treasury 1: xion17d2029pa5p9u392ja4etyg6smvdk6lsnh64mu66rs075jrs4nevs37cn3s
+Treasury 2: xion1pznw0ptf2gfkvc6u7tu6k09sm26m99dlfksen5cm2gqfp4qkmjgqzhgr4k
+ Treasury 3:xion1uyq35hcqnfqcgygkrvkee3slx58wwc357zpqdk7hcd78fz4wtyqqtm3c76
+ */
 const router = Router();
 
 createRoot(document.getElementById("root")!).render(
@@ -55,11 +48,12 @@ createRoot(document.getElementById("root")!).render(
        <AbstraxionProvider
         config={
         {
+          // treasury: "xion17d2029pa5p9u392ja4etyg6smvdk6lsnh64mu66rs075jrs4nevs37cn3s",
           treasury: "xion1pznw0ptf2gfkvc6u7tu6k09sm26m99dlfksen5cm2gqfp4qkmjgqzhgr4k",
           rpcUrl: "https://rpc.xion-testnet-2.burnt.com:443",
           restUrl: "https://api.xion-testnet-2.burnt.com/",
-          // callbackUrl:'/',
-                    
+          
+                  
         }
         }
         // config={treasuryConfig}

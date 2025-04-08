@@ -57,12 +57,12 @@ const MobileMenu: React.FC<IMobileMenu> = ({ isOpen, closeMobile, handleOutsideC
             <SwitchButton />
             {/* <WalletConnect/> */}
             <XionWallet/>
-            {
+            {/* {
               isAuthenticated
               ?
               <AppButton label="Log Out" onClick={handleLogout} size={"lg"}/>:
             <AppButton label="Get Start" onClick={()=>navigate('/auth')} size={"lg"}/>
-            }
+            } */}
           </div>
         </motion.div>
       )}
@@ -88,12 +88,12 @@ const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => {
       <div className="flex items-center gap-4">
         {/* <WalletConnect/> */}
         <XionWallet/>
-        {
+        {/* {
               isAuthenticated
               ?
               <AvatarMenu/>:
             <AppButton label="Get Start" onClick={()=>navigate('/auth')} size={"lg"}/>
-            }
+            } */}
         <button onClick= {closeMobile} className="text-white">
           {isOpen ? <X className="text-warp-100 w-6 h-6" /> : <Menu className="text-warp-100 w-6 h-6" />}
         </button>
@@ -106,12 +106,12 @@ const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => {
       {/* <AppButton label="Connect Wallet" variant="default" /> */}
       {/* <WalletConnect/> */}
       <XionWallet/>
-      {
+      {/* {
               isAuthenticated
               ?
               <AvatarMenu/>:
               <AppButton label="Get Start" onClick={()=>navigate('/auth')} size={"lg"}/>
-            }
+            } */}
     </div>
   </section>
 );

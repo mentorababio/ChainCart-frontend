@@ -1,178 +1,113 @@
-// import { maskAddress } from "@/utils/maskAddress";
-// import { motion } from "framer-motion";
+import { Abstraxion } from "@burnt-labs/abstraxion";
+import { useCallback, useEffect, useState } from "react";
 import useWallet from "./useWallet";
-import {
-    Abstraxion,
-    // useAbstraxionAccount,
-    // useModal
-  } from "@burnt-labs/abstraxion";
-  import { Button as XIONBUTTON } from "@burnt-labs/ui";
-  import { useEffect } from "react";
-  import "@burnt-labs/abstraxion/dist/index.css";
-import "@burnt-labs/ui/dist/index.css";
-
-
+import { useWalletAuthMutation } from "@/api/authService";
+import { RootState, useAppDispatch, useAppSelector } from "@/store";
+import { useToast } from "@/hooks/useToast";
+import { IApiResponse, IUserResponse } from "@/@types/types";
+import { setAuthenticated } from "@/features/authSlice";
+import AuthStore from "@/utils/AuthStore";
+import { Button } from "../ui/button";
+import AppButton from "../shared/AppButton";
+import { maskAddress } from "@/utils/maskAddress";
 
 const XionWallet = () => {
   const { setShow, bech32Address, isConnected, isConnecting } = useWallet();
-//   const navigate = useNavigate()
-//   useEffect(() => {
-//     if(isConnected){
-//       console.log(bech32Address)
-//     }
-//   }, [isConnected,navigate]);
-//   useEffect(() => {
-//     const params = new URLSearchParams(window.location.search);
-//     const allParams: Record<string, string> = {};
-  
-//     params.forEach((value, key) => {
-//       allParams[key] = value;
-//     });
-//     console.log({ allParams });
-//   }, []);
-  
-  
-  
-//   const handleConnect = () => {
-//     setShow(true);
-//   };
+  const [walletAuth, { isLoading }] = useWalletAuthMutation();
+  const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector((state: RootState) => state.auth);
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
-//   const handleDisconnect = () => {
-//     setShow(false);
-//     if(!isConnected){
-//       navigate("/",{replace:true});
-//     }
-//   };
+  useEffect(() => {
+    if (bech32Address && !isAuthenticated) {
+      handleAuth();
+    }
 
-//   return (
-//     <div>
-//       {isConnected ? (
-//         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-//           <AppButton
-//             onClick={handleDisconnect}
-//             variant="destructive"
-//             className="hover:bg-amber-100"
-//             label={`Disconnect ${maskAddress(bech32Address!)}`}
-//             // label={`Disconnect ${maskAddress(bech32Address!)}`}
-//           />
-//         </motion.div>
-//       ) : (
-//         <div className="flex gap-4">
-//           <AppButton
-//             onClick={handleConnect}
-//             isLoading={isConnecting} 
-//             label={bech32Address ? bech32Address : "Connect Xion Wallet"}
-//             variant="default"
-//           />
-//         </div>
-//       )}
-//       <Abstraxion  onClose={() => setShow(false)} />
-//     </div>
-//   );
-// const { data: { bech32Address }, isConnected, isConnecting } = useAbstraxionAccount();
+    if (!isConnected) {
+      setLoading(false);
+    }
+  }, [isConnected, isConnecting, bech32Address, isAuthenticated]);
 
-// // General state hooks
-// const [, setShow] = useModal();
+  const handleConnect = async () => {
+    setLoading(true);
+    setShow(true); 
+  };
 
-// watch isConnected and isConnecting
-// only added for testing
-useEffect(() => {
-  console.log({ isConnected, isConnecting });
-}, [isConnected, isConnecting])
+  const handleDisconnect = () => {
 
-return (
-    <main className="">
-      
-       <XIONBUTTON
-    
-        //   fullWidth
-          onClick={() => { setShow(true) }}
-          structure="base"
-          
-      >
-        {bech32Address ? (
-            <div className="flex items-center justify-center">VIEW ACCOUNT</div>
-        ) : (
-            "CONNECT"
-        )}
-      </XIONBUTTON> 
-      {/* <AppButton label={bech32Address ?'VIEW ACCOUNT' :"CONNECT"}  onClick={() => { setShow(true) }}/> */}
-      {
-        bech32Address &&
-          <div className="border-2 border-primary rounded-md">
-            <div className="flex flex-row gap-6 text-red-600">
-              <div>
-                address
-              </div>
-              <div>
-                {bech32Address}
-              </div>
-            </div>
-          </div>
+    AuthStore.removeAccessToken();
+    dispatch(setAuthenticated({ isAuthenticated: false, user: null }));
+    setShow(false);
+    setLoading(false); 
+    toast.success("Wallet disconnected successfully.");
+  };
+
+  const handleAuth = useCallback(async () => {
+    if (!bech32Address) return;
+
+    toast.dismiss();
+    const loadingToast = toast.loading("Authenticating wallet...");
+
+    try {
+      const response: IApiResponse = await walletAuth({
+        walletAddress: bech32Address,
+      }).unwrap();
+
+      toast.dismiss(loadingToast);
+
+      if (response.status === 200) {
+        const successResponse = response.data as IUserResponse;
+        dispatch(
+          setAuthenticated({
+            isAuthenticated: true,
+            user: {
+              id: successResponse.accessToken,
+              roles: successResponse.result!.role,
+              walletAddress: successResponse.result!.walletAddress,
+            },
+          })
+        );
+        AuthStore.setAccessToken(successResponse.accessToken);
+        toast.success("Wallet connected successfully!");
+      } else {
+        toast.error(response.message || "Authentication failed", {
+          action: (
+            <Button onClick={handleAuth} variant="outline" size="sm">
+              Retry
+            </Button>
+          ),
+        });
       }
-      <Abstraxion onClose={() => setShow(false)} />
-      
-    </main>
-);
- 
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      toast.error("Wallet authentication failed. Please try again.", {
+        action: (
+          <Button onClick={handleAuth} variant="outline" size="sm">
+            Retry
+          </Button>
+        ),
+      });
+      console.error("Wallet Auth Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [bech32Address, walletAuth, dispatch]);
+
+  return (
+    <section>
+      <AppButton
+        isLoading={loading || isLoading}
+        label={
+          bech32Address
+            ? `VIEW ACCOUNT ${maskAddress(bech32Address)}`
+            : "CONNECT Xion Wallet"
+        }
+        onClick={handleConnect}
+      />
+      <Abstraxion onClose={() => { setShow(false); setLoading(false); }} />
+    </section>
+  );
 };
 
 export default XionWallet;
-/**
- * 
- * "use client";
-import {
-  Abstraxion,
-  useAbstraxionAccount,
-  useModal
-} from "@burnt-labs/abstraxion";
-import { Button } from "@burnt-labs/ui";
-import { useEffect } from "react";
-
-export default function Page(): JSX.Element {
-  // Abstraxion hooks
-  const { data: { bech32Address }, isConnected, isConnecting } = useAbstraxionAccount();
-
-  // General state hooks
-  const [, setShow] = useModal();
-
-  // watch isConnected and isConnecting
-  // only added for testing
-  useEffect(() => {
-    console.log({ isConnected, isConnecting });
-  }, [isConnected, isConnecting])
-
-  return (
-      <main className="m-auto flex min-h-screen max-w-xs flex-col items-center justify-center gap-4 p-4">
-        <h1 className="text-2xl font-bold tracking-tighter text-black dark:text-white">
-          Abstraxion
-        </h1>
-        <Button
-            fullWidth
-            onClick={() => { setShow(true) }}
-            structure="base"
-        >
-          {bech32Address ? (
-              <div className="flex items-center justify-center">VIEW ACCOUNT</div>
-          ) : (
-              "CONNECT"
-          )}
-        </Button>
-        {
-          bech32Address &&
-            <div className="border-2 border-primary rounded-md p-4 flex flex-row gap-4">
-              <div className="flex flex-row gap-6">
-                <div>
-                  address
-                </div>
-                <div>
-                  {bech32Address}
-                </div>
-              </div>
-            </div>
-        }
-        <Abstraxion onClose={() => setShow(false)} />
-      </main>
-  );
-}
- */
