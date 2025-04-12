@@ -5,7 +5,7 @@ import { uxionToXion, xionToUxion } from "@/utils/convert";
 const contractAddress =
   "xion1t6pp2v9fz5lsdl5ru9ynwcs322qrqe7hjpj66cqsmfjwfkukel8sesxm8y";
 
-export default function useMetaService() {
+export default function useMeta() {
   const {
     signingClient,
     queryClient,

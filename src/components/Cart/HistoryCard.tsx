@@ -7,6 +7,8 @@ import { RootState, useAppSelector } from "@/store";
 import { IApiResponse, IUserOrderHistory } from "@/@types/types";
 import { useUpdateOrderStatusMutation } from "@/api/orderService";
 import { useToast } from "@/hooks/useToast";
+// import { useMetaAction } from "@/hooks/useMetaAction";
+import useMeta from "@/hooks/useMeta";
 
 interface HistoryCardProps {
   purchase: IUserOrderHistory;
@@ -21,6 +23,7 @@ export default function HistoryCard({
   const { user } = useAppSelector((state: RootState) => state.auth);
   const [releaseorCancelFund, { isLoading }] = useUpdateOrderStatusMutation();
    const toast  = useToast();
+  const {releaseOrCancelFund} = useMeta()
 
   const handleEscrowAction = async (action: "release" | "cancel") => {
     toast.dismiss();
@@ -31,16 +34,21 @@ export default function HistoryCard({
         toast.error("Wallet address is required to release funds.");
         return;
       }
-      const response: IApiResponse = await releaseorCancelFund({
-        status: action,
-        orderId: purchase._id,
-        buyerAddress: user.walletAddress,
-      }).unwrap();
-      toast.success(response.message)
-    } catch (error) {
-      console.log(error)
-      toast.dismiss(loadingToast);
+      const releaseFundResult = await releaseOrCancelFund(user.walletAddress,action);
+      if (releaseFundResult?.transactionHash) {
+        const response: IApiResponse = await releaseorCancelFund({
+          status: action,
+          orderId: purchase._id,
+          // buyerAddress: user.walletAddress,
+        }).unwrap();
+        toast.success(response.message)
+      }else{
+        toast.dismiss(loadingToast);
       toast.error(`Error!! Failed to ${action} funds. Please try again.`)
+      }
+    } catch (error) {
+      console.error("Error releasing funds:", error);
+      
     }finally{
       toast.dismiss(loadingToast);
     }

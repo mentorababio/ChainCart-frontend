@@ -5,9 +5,8 @@ import { confirmOrder } from "@/utils/orderConfirm";
 import { useOrderAvailableMutation, useOrderPaymentConfirmMutation } from "@/api/orderService";
 import { RootState, useAppSelector } from "@/store";
 import { useToast } from "./useToast";
+import useMeta from "./useMeta";
 
-
-import useMetaService from "./useMeta";
 
 export function useMetaAction() {
 
@@ -17,7 +16,7 @@ export function useMetaAction() {
   const [orderConfirm, { isLoading: orderConfirmLoad }] = useOrderPaymentConfirmMutation();
   const { user } = useAppSelector((state: RootState) => state.auth);
   const toast  = useToast();
-  const {initEscrow} = useMetaService()
+  const {initEscrow} = useMeta()
     const [quantity, setQuantity] = useState(1);
       const [orderAvailable, { isLoading: orderLoad }] = useOrderAvailableMutation();
     

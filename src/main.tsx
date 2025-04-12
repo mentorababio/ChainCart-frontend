@@ -10,7 +10,8 @@ import { Toaster } from 'sonner';
 import { AbstraxionProvider } from "@burnt-labs/abstraxion";
 import "./index.css";
 
-
+//? new treasure
+//? xion1ec2vfqsxpj36uwe05ahszvnapnm2f9vgfe6sjy50yuc9zey4w28qy0gpfv
 // const seatContractAddress =
 //   "xion1z70cvc08qv5764zeg3dykcyymj5z6nu4sqr7x8vl4zjef2gyp69s9mmdka";
 
@@ -49,7 +50,8 @@ createRoot(document.getElementById("root")!).render(
         config={
         {
           // treasury: "xion17d2029pa5p9u392ja4etyg6smvdk6lsnh64mu66rs075jrs4nevs37cn3s",
-          treasury: "xion1pznw0ptf2gfkvc6u7tu6k09sm26m99dlfksen5cm2gqfp4qkmjgqzhgr4k",
+          // treasury: "xion1pznw0ptf2gfkvc6u7tu6k09sm26m99dlfksen5cm2gqfp4qkmjgqzhgr4k",
+          treasury: "xion1ec2vfqsxpj36uwe05ahszvnapnm2f9vgfe6sjy50yuc9zey4w28qy0gpfv",
           rpcUrl: "https://rpc.xion-testnet-2.burnt.com:443",
           restUrl: "https://api.xion-testnet-2.burnt.com/",
           
