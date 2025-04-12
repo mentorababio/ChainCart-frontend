@@ -61,3 +61,30 @@ if (!signature) {
   throw new Error("Failed to generate off-chain signature.");
 }
 console.log("Off-chain signature:", signature);
+
+import { useEffect, useState } from "react";
+import { ethers } from "ethers";
+
+export default function useMeta() {
+  const [balance, setBalance] = useState<string>("0");
+
+  const getMetaBalance = () => {
+    return balance;
+  };
+
+  const fetchBalance = async (walletAddress: string) => {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const balance = await provider.getBalance(walletAddress);
+      const formatted = ethers.utils.formatEther(balance);
+      setBalance(formatted);
+    } catch (error) {
+      console.error("Error fetching balance:", error);
+    }
+  };
+
+  return {
+    getMetaBalance, // returns string
+    fetchBalance, // you call this once with the wallet address
+  };
+}

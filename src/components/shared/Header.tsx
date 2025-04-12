@@ -6,15 +6,15 @@ import Notification from "./Notification";
 // import { InputField } from "./InputField";
 import CategorySelector from "./CategorySelector";
 import { headerMenu } from "@/CONSTANT/data";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import { WalletConnect } from "../Wallet/WalletConnect";
 import Logo from "./Logo";
 import SearchBar from "../search/SearchBar";
 import XionWallet from "../Wallet/XionWallet";
-import AppButton from "./AppButton";
-import { RootState, useAppSelector } from "@/store";
-import useAuth from "../auth/hook/useAuth";
-import AvatarMenu from "./Avatar";
+// import AppButton from "./AppButton";
+// import { RootState, useAppSelector } from "@/store";
+// import useAuth from "../auth/hook/useAuth";
+// import AvatarMenu from "./Avatar";
 
 interface IMobileMenu {
   isOpen: boolean;
@@ -23,9 +23,9 @@ interface IMobileMenu {
 }
 
 const MobileMenu: React.FC<IMobileMenu> = ({ isOpen, closeMobile, handleOutsideClick }) =>{
-  const navigate = useNavigate()
-  const {isAuthenticated} = useAppSelector((state:RootState)=>state.auth)
-  const {handleLogout} = useAuth()
+  // const navigate = useNavigate()
+  // const {isAuthenticated} = useAppSelector((state:RootState)=>state.auth)
+  // const {handleLogout} = useAuth()
   return(
     <AnimatePresence>
       {isOpen && (
@@ -76,8 +76,8 @@ interface ITopHeader {
 }
 
 const TopHeader: React.FC<ITopHeader> = ({ isOpen, closeMobile }) => {
-  const navigate = useNavigate()
-  const {isAuthenticated} = useAppSelector((state:RootState)=>state.auth)
+  // const navigate = useNavigate()
+  // const {isAuthenticated} = useAppSelector((state:RootState)=>state.auth)
   // const {handleLogout} = useAuth()
   return(
   <section className="p-3 flex items-center justify-between gap-2 lg:container lg:mx-auto">

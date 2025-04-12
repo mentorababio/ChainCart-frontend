@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import AppButton from "../shared/AppButton";
 import { Copy } from "lucide-react";
 import { maskAddress } from "@/utils/maskAddress";
@@ -25,48 +25,55 @@ export default function HistoryCard({
    const toast  = useToast();
   const {releaseOrCancelFund} = useMeta()
 
-  const handleEscrowAction = async (action: "release" | "cancel") => {
-    console.log("⚙️ handleEscrowAction initialized");
-    console.log("Action:", action);
 
+const handleEscrowAction = useCallback(async (action: "release" | "cancel") => {
+  console.log("🧠 Button was clicked. Escrow action starting...", action);
 
-    toast.dismiss();
-    
-    const loadingToast = toast.loading(`${action} to wallet...`);
-    try {
+  toast.dismiss();
+
+  const loadingToast = toast.loading(`${action} to wallet...`);
+  try {
+    if (!user?.walletAddress) {
       toast.dismiss(loadingToast);
-      if (!user?.walletAddress) {
-        toast.error("Wallet address is required to release funds.");
-        return;
-      }
-      const confirmTransaction = window.confirm(
-        `You are about to ${action} Xion to the sellert. Do you want to proceed?`
-      );
-
-      if (!confirmTransaction) {
-        toast.info("Transaction cancelled.");
-        // setKeepLoad(false);
-        return;
-      }
-      const releaseFundResult = await releaseOrCancelFund(user.walletAddress,action);
-      if (releaseFundResult?.transactionHash) {
-        const response: IApiResponse = await releaseorCancelFund({
-          status: action,
-          orderId: purchase._id,
-          // buyerAddress: user.walletAddress,
-        }).unwrap();
-        toast.success(response.message)
-      }else{
-        toast.dismiss(loadingToast);
-      toast.error(`Error!! Failed to ${action} funds. Please try again.`)
-      }
-    } catch (error) {
-      console.error("Error releasing funds:", error);
-      
-    }finally{
-      toast.dismiss(loadingToast);
+      toast.error("Wallet address is required to release funds.");
+      return;
     }
-  };
+
+    const confirmTransaction = window.confirm(
+      `You are about to ${action} Xion to the seller. Do you want to proceed?`
+    );
+
+    if (!confirmTransaction) {
+      toast.dismiss(loadingToast);
+      toast.info("Transaction cancelled.");
+      return;
+    }
+
+    const releaseFundResult = await releaseOrCancelFund(user.walletAddress, action);
+    if (releaseFundResult?.transactionHash) {
+      const response: IApiResponse = await releaseorCancelFund({
+        status: action,
+        orderId: purchase._id,
+      }).unwrap();
+      toast.success(response.message);
+    } else {
+      toast.dismiss(loadingToast);
+      toast.error(`Error!! Failed to ${action} funds. Please try again.`);
+    }
+  } catch (error) {
+    toast.dismiss(loadingToast);
+    console.error("Error releasing funds:", error);
+  } finally {
+    toast.dismiss(loadingToast);
+  }
+}, [
+  toast,
+  user?.walletAddress,
+  releaseOrCancelFund,
+  releaseorCancelFund,
+  purchase._id,
+]);
+
 
   const { txHash, amount } = purchase.payment || {};
 

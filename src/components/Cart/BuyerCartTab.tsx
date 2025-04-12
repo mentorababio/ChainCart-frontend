@@ -12,23 +12,20 @@ export default function BuyerCartTab() {
   const [itemQuantities, setItemQuantities] = useState<Record<string, number>>(
     {}
   );
-  const dispatch = useAppDispatch()
-  
+  const dispatch = useAppDispatch();
 
   const { cart } = useSetCart();
 
   useEffect(() => {
     if (!cart?.items) return;
-  
     const initialQuantities: Record<string, number> = {};
     cart.items.forEach((item) => {
       initialQuantities[item._id] = item.quantity;
     });
-  
+
     setItemQuantities(initialQuantities);
   }, [cart?.items.length]);
   // }, [JSON.stringify(cart?.items)]);
-  
 
   const {
     handleRemoveCart,
@@ -42,8 +39,9 @@ export default function BuyerCartTab() {
     // buyLoading
   } = useCartActions();
   // ,orderLoad,orderConfirmLoad,keepLoad
-  const {handleBuyFromMeta,buyLoad,orderConfirmLoad,keepLoad} = useMetaAction()
-  
+  const { handleBuyFromMeta, buyLoad, orderConfirmLoad, keepLoad } =
+    useMetaAction();
+
   const incrementItem = (itemId: string) => {
     setItemQuantities((prev) => {
       const updatedQuantity = (prev[itemId] || 0) + 1;
@@ -52,10 +50,15 @@ export default function BuyerCartTab() {
         [itemId]: updatedQuantity,
       };
     });
-  
-    dispatch(setQuantityFromReducer({ _id: itemId, quantity: itemQuantities[itemId] + 1 || 1 }));
+
+    dispatch(
+      setQuantityFromReducer({
+        _id: itemId,
+        quantity: itemQuantities[itemId] + 1 || 1,
+      })
+    );
   };
-  
+
   const decrementItem = (itemId: string) => {
     setItemQuantities((prev) => {
       const updatedQuantity = Math.max(1, (prev[itemId] || 1) - 1);
@@ -64,11 +67,14 @@ export default function BuyerCartTab() {
         [itemId]: updatedQuantity,
       };
     });
-  
-    dispatch(setQuantityFromReducer({ _id: itemId, quantity: Math.max(1, itemQuantities[itemId] - 1 || 1) }));
+
+    dispatch(
+      setQuantityFromReducer({
+        _id: itemId,
+        quantity: Math.max(1, itemQuantities[itemId] - 1 || 1),
+      })
+    );
   };
-  
-  
 
   const calculateItemTotal = (itemId: string, price: number) => {
     const quantity = itemQuantities[itemId] || 1;
@@ -95,13 +101,12 @@ export default function BuyerCartTab() {
                   itemQuantities={itemQuantities}
                   incrementItem={incrementItem}
                   decrementItem={decrementItem}
-                  
                   handleBuyFromCart={handleBuyFromMeta}
                   // handleBuyFromCart={handleBuyFromXion}
                   // handleBuyFromCart={handleBuyFromCart}
                   handleRemoveCart={handleRemoveCart}
                   buyLoad={buyLoad}
-                  orderConfirmLoad={orderConfirmLoad }
+                  orderConfirmLoad={orderConfirmLoad}
                   keepLoad={keepLoad}
                   removeLoad={removeLoad}
                   // buyLoading={buyLoading}

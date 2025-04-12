@@ -16,9 +16,9 @@ export default function useMeta() {
     // signArb
   } = useWallet();
 
-  console.log("⚙️ handleEscrowAction initialized");
+  // console.log("⚙️ use meta running");
   
-  const getMetaBalance = async (address: string, denom: string = "uxion") => {
+  const getMetaBalance = async (address: string, denom: string = "uxion"):Promise<string | undefined> => {
     try {
       if (!isConnected) {
         openWalletModal();
@@ -30,8 +30,8 @@ export default function useMeta() {
       }
 
       const bal = await queryClient.getBalance(address, denom);
-
-      if (bal && bal.amount) {
+        const {amount} = bal
+      if (bal && amount) {
         return uxionToXion(bal.amount);
       } else {
         throw new Error("Balance not found or invalid balance structure.");
