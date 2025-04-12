@@ -26,12 +26,26 @@ export default function HistoryCard({
   const {releaseOrCancelFund} = useMeta()
 
   const handleEscrowAction = async (action: "release" | "cancel") => {
+    console.log("⚙️ handleEscrowAction initialized");
+    console.log("Action:", action);
+
+
     toast.dismiss();
+    
     const loadingToast = toast.loading(`${action} to wallet...`);
     try {
       toast.dismiss(loadingToast);
       if (!user?.walletAddress) {
         toast.error("Wallet address is required to release funds.");
+        return;
+      }
+      const confirmTransaction = window.confirm(
+        `You are about to ${action} Xion to the sellert. Do you want to proceed?`
+      );
+
+      if (!confirmTransaction) {
+        toast.info("Transaction cancelled.");
+        // setKeepLoad(false);
         return;
       }
       const releaseFundResult = await releaseOrCancelFund(user.walletAddress,action);
@@ -82,7 +96,7 @@ export default function HistoryCard({
       </div>
 
       <p className="text-gray-700">
-        <strong>Amount:</strong> {amount} NTRN
+        <strong>Amount:</strong> {amount} XION
       </p>
       <p className="text-gray-700">
         <strong>Status:</strong> {purchase.status}
@@ -106,7 +120,7 @@ export default function HistoryCard({
             )}
 
             <div>
-              <p className="font-semibold">Price: {item?.price} NTRN</p>
+              <p className="font-semibold">Price: {item?.price} XION</p>
               <p>Quantity: {item.quantity}</p>
               {/* <p>Stock: {item.product?.stock}</p> */}
             </div>

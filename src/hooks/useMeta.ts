@@ -13,8 +13,11 @@ export default function useMeta() {
     openWalletModal,
     isConnecting,
     bech32Address,
+    // signArb
   } = useWallet();
 
+  console.log("⚙️ handleEscrowAction initialized");
+  
   const getMetaBalance = async (address: string, denom: string = "uxion") => {
     try {
       if (!isConnected) {
@@ -61,7 +64,7 @@ export default function useMeta() {
   const initEscrow = async (userWalletAddress: string, amount: string, sellerAddress: string) => {
     console.log({ isConnected, isConnecting, bech32Address }, "from init");
     console.log("Client type:", signingClient?.constructor?.name);
-  
+  console.log({amount})
     try {
       if (!isConnected) {
         openWalletModal();
@@ -82,18 +85,27 @@ export default function useMeta() {
   
       
   
-      const formattedAmount = xionToUxion(amount);
+      const formattedAmountx = xionToUxion(amount);
+      const formattedAmount = Math.floor(Number(amount) * 1e6).toString();
+      
+      console.log({bech32Address})
+      console.log({garntee:signingClient.granteeAddress})
+      // const messageToSign = `I approve initiating an escrow of ${amount} XION to ${sellerAddress}`;
+      // const signature = await signArb?.(bech32Address,messageToSign) ;
+      // console.log("Off-chain signature:", signature);
       const msg = {
         initiate_escrow: {
           seller: sellerAddress,
-          amount: formattedAmount,
+          amount: formattedAmountx,
         },
       };
       const funds = [{ denom: "uxion", amount: formattedAmount }];
       const fee = {
         amount: [{ denom: "uxion", amount: "1000" }], 
-        gas: "100000",
+        // gas: "100000",
       };
+      console.log({formattedAmount})
+      console.log({formattedAmountx})
   
       console.log("Executing:", { bech32Address, contractAddress, msg, funds, fee });
       console.log("Client details:", {
@@ -102,7 +114,9 @@ export default function useMeta() {
         granteeAddress: signingClient.granteeAddress,
       });
   
-      const result = await signingClient.execute(bech32Address, contractAddress, msg, fee, undefined, funds);
+      // const result = await signingClient.execute(bech32Address, contractAddress, msg, fee, undefined, funds);
+      // const result = await signingClient.execute(bech32Address, contractAddress, msg,"auto");
+      const result = await signingClient.execute(bech32Address, contractAddress, msg,"auto",undefined, funds);
   
       console.log("Escrow initiated:", result);
       return {

@@ -35,7 +35,6 @@ const XionWallet = () => {
   };
 
   const handleDisconnect = () => {
-
     AuthStore.removeAccessToken();
     dispatch(setAuthenticated({ isAuthenticated: false, user: null }));
     setShow(false);

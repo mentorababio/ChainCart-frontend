@@ -36,13 +36,13 @@ export default function BuyerCartTab() {
     removeLoad,
     deleteLoad,
     // handleBuyFromCart,
-    buyLoad,
-    orderConfirmLoad,
-    keepLoad,
+    // buyLoad,
+    // orderConfirmLoad,
+    // keepLoad,
     // buyLoading
   } = useCartActions();
-  
-  const {handleBuyFromMeta} = useMetaAction()
+  // ,orderLoad,orderConfirmLoad,keepLoad
+  const {handleBuyFromMeta,buyLoad,orderConfirmLoad,keepLoad} = useMetaAction()
   
   const incrementItem = (itemId: string) => {
     setItemQuantities((prev) => {
@@ -101,7 +101,7 @@ export default function BuyerCartTab() {
                   // handleBuyFromCart={handleBuyFromCart}
                   handleRemoveCart={handleRemoveCart}
                   buyLoad={buyLoad}
-                  orderConfirmLoad={orderConfirmLoad}
+                  orderConfirmLoad={orderConfirmLoad }
                   keepLoad={keepLoad}
                   removeLoad={removeLoad}
                   // buyLoading={buyLoading}
