@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@burnt-labs/abstraxion": "^1.0.0-alpha.60",
+    "@burnt-labs/abstraxion": "^1.0.0-alpha.62",
     "@burnt-labs/abstraxion-core": "^1.0.0-alpha.55",
     "@cosmjs/cosmwasm-stargate": "^0.33.0",
     "@cosmjs/proto-signing": "^0.33.0",
@@ -35,8 +35,8 @@
     "leaflet": "^1.9.4",
     "lucide-react": "^0.479.0",
     "motion": "^12.4.11",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-geocode": "^2.0.1",
     "react-leaflet": "^4.2.1",
     "react-modal": "^3.16.3",
