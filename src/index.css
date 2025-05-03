@@ -1,17 +1,14 @@
-  /* @import "tailwindcss"; */
-  @tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* @import "tailwindcss"; */
 
-  @import "tailwindcss" important;
+@import "tailwindcss" important;
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
   --color-warp-100: #122442;
-  --color-warp-200: #FFCD00;
-  --color-warp-300: #FBEACF;
+  --color-warp-200: #ffcd00;
+  --color-warp-300: #fbeacf;
 }
 
 :root {
@@ -33,7 +30,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #D57A66;
+  --primary: #d57a66;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -43,8 +40,8 @@
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: #F5E6D3;
-  --input: #3C2F2F;
+  --border: #f5e6d3;
+  --input: #3c2f2f;
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -61,8 +58,8 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --color-warp-100: #122442;
-  --input-secondary: #B5A398;
-  --main: #6A4E42;
+  --input-secondary: #b5a398;
+  --main: #6a4e42;
 }
 
 a {
@@ -80,7 +77,7 @@ body {
   /* place-items: center; */
   min-width: 320px;
   min-height: 100vh;
-  background-color:rgba(255, 255, 255, 0.87);
+  background-color: rgba(255, 255, 255, 0.87);
 }
 
 h1 {
